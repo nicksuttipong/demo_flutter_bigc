@@ -14,7 +14,7 @@ final Map<String, WidgetBuilder> map = {
 String? initailRoute;
 
 void main(){
-  initailRoute = '/authen';
+  initailRoute = '/createAccout';
   runApp(MyApp());
 }
 
