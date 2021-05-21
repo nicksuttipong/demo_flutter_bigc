@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ShowTitle extends StatelessWidget {
   final String? title;
-  TextStyle? textStyle;
+  final TextStyle? textStyle;
   ShowTitle({@required this.title, @required this.textStyle});
 
   @override
