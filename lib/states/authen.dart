@@ -1,4 +1,5 @@
 import 'package:bigcproj/utilities/constant/con_colors.dart';
+import 'package:bigcproj/utilities/style/style_button.dart';
 import 'package:bigcproj/widgets/show_image.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _AuthenState extends State<Authen> {
           child: Column(
             children: [
               buildImage(size),
-              ShowTitle('BIG C Onlinee'),
+              ShowTitle('BIG C Online'),
               buildUser(size),
               buildPassword(size),
               buildLogin(size)
@@ -37,7 +38,7 @@ class _AuthenState extends State<Authen> {
         child: ElevatedButton(
             onPressed: () {},
             child: Text('Login'),
-            style: ElevatedButton.styleFrom(primary: ConColors.primary)));
+            style: StyleButton().myButtonStyle()));
   }
 
   Container buildUser(double size) {
@@ -46,12 +47,12 @@ class _AuthenState extends State<Authen> {
         child: TextFormField(
           decoration: InputDecoration(
               labelText: 'User :',
-              prefixIcon: Icon(Icons.account_circle, color: ConColors.purple),
+              prefixIcon: Icon(Icons.account_circle, color: ConColors.primary),
               enabledBorder:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.purple))),
+                  borderSide: BorderSide(color: ConColors.primary))),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
@@ -67,12 +68,12 @@ class _AuthenState extends State<Authen> {
                   onPressed: () {}, icon: Icon(Icons.remove_red_eye)),
               labelText: 'Password :',
               prefixIcon:
-                  Icon(Icons.lock_clock_outlined, color: ConColors.purple),
+                  Icon(Icons.lock_clock_outlined, color: ConColors.primary),
               enabledBorder:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.purple))),
+                  borderSide: BorderSide(color: ConColors.primary))),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
