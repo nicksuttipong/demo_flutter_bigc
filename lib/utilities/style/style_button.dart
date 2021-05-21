@@ -8,5 +8,4 @@ class StyleButton {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)));
   
-  StyleButton();
 }
