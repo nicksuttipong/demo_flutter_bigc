@@ -1,5 +1,6 @@
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CreateAccout extends StatefulWidget {
   @override
@@ -7,6 +8,29 @@ class CreateAccout extends StatefulWidget {
 }
 
 class _CreateAccoutState extends State<CreateAccout> {
+
+  double? lat, lng;
+
+  @override
+  void initState() {
+    super.initState();
+    findLatLon();
+  }
+
+  Future<Null> findLatLon()async{
+    Position? position = await findPosition();
+    lat = position!.latitude;
+    lng = position.longitude;
+  }
+
+  Future<Position?> findPosition()async{
+    try {
+      return await Geolocator.getCurrentPosition();
+    } catch (e) {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
