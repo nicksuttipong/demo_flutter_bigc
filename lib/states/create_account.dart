@@ -1,4 +1,5 @@
 import 'package:bigcproj/utilities/constant/con_colors.dart';
+import 'package:bigcproj/utilities/style/style_button.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -40,7 +41,9 @@ class _CreateAccoutState extends State<CreateAccout> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: ConColors.primary, title: Text('Create Accout')),
+        backgroundColor: ConColors.primary,
+        title: Text('Create Accout'),
+      ),
       body: loading ? ShowProgress() : buildCenter(size),
     );
   }
@@ -52,8 +55,34 @@ class _CreateAccoutState extends State<CreateAccout> {
           buildName(size),
           buildUser(size),
           buildPassword(size),
-          Text('lat: $lat long: $lng'),
+          buildMap(size),
+          buildCreateAccout(size)
         ],
+      ),
+    );
+  }
+
+  Container buildCreateAccout(double size) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      width: size * 0.6,
+      child: ElevatedButton.icon(
+        style: StyleButton().myButtonStyle(),
+        onPressed: () {},
+        icon: Icon(Icons.cloud_upload_rounded),
+        label: Text('Create Accout'),
+      ),
+    );
+  }
+
+  Expanded buildMap(double size) {
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 16),
+        width: size * 0.8,
+        height: 200,
+        color: ConColors.primary,
+        child: Text('lat: $lat long: $lng'),
       ),
     );
   }
