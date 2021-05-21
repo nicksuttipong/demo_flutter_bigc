@@ -21,24 +21,32 @@ class _AuthenState extends State<Authen> {
           child: Column(
             children: [
               buildImage(size),
-              ShowTitle(
-                  title: 'BIG C Online', textStyle: StyleText().h1Style()),
+              buildShowTitle(),
               buildUser(size),
               buildPassword(size),
               buildLogin(size),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                      title: 'Non Account?', textStyle: StyleText().h3Style()),
-                  TextButton(onPressed: () {}, child: Text('Create Account'))
-                ],
-              ),
+              buildRow(),
             ],
           ),
         ),
       )),
     );
+  }
+
+  ShowTitle buildShowTitle() {
+    return ShowTitle(
+                title: 'BIG C Online', textStyle: StyleText().h1Style());
+  }
+
+  Row buildRow() {
+    return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ShowTitle(
+                    title: 'Non Account?', textStyle: StyleText().h3Style()),
+                TextButton(onPressed: () {}, child: Text('Create Account'))
+              ],
+            );
   }
 
   Container buildLogin(double size) {
