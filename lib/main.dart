@@ -1,8 +1,14 @@
 import 'package:bigcproj/states/authen.dart';
+import 'package:bigcproj/states/create_account.dart';
+import 'package:bigcproj/states/service_admin.dart';
+import 'package:bigcproj/states/service_user.dart';
 import 'package:flutter/material.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
+  '/createAccout': (BuildContext context) => CreateAccout(),
+  'createAdmin': (BuildContext context) => ServiceAdmin(),
+  'serviceAdmin': (BuildContext context) => ServiceUser(),
 };
 
 String? initailRoute;
