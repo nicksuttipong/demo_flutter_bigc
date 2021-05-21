@@ -5,6 +5,7 @@
    <application
         android:label="bigcproj"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBXGm6OBk5phxVZ36LwIdCNWTexiw9CK4g"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
