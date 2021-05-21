@@ -20,7 +20,7 @@ class _AuthenState extends State<Authen> {
           child: Column(
             children: [
               buildImage(size),
-              ShowTitle('BIG C Online'),
+              ShowTitle(title: 'BIG C Online',),
               buildUser(size),
               buildPassword(size),
               buildLogin(size)
