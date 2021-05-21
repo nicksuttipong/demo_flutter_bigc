@@ -34,19 +34,21 @@ class _AuthenState extends State<Authen> {
   }
 
   ShowTitle buildShowTitle() {
-    return ShowTitle(
-                title: 'BIG C Online', textStyle: StyleText().h1Style());
+    return ShowTitle(title: 'BIG C Online', textStyle: StyleText().h1Style());
   }
 
   Row buildRow() {
     return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(
-                    title: 'Non Account?', textStyle: StyleText().h3Style()),
-                TextButton(onPressed: () {}, child: Text('Create Account'))
-              ],
-            );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ShowTitle(title: 'Non Account?', textStyle: StyleText().h3Style()),
+        TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/createAccout');
+            },
+            child: Text('Create Account'))
+      ],
+    );
   }
 
   Container buildLogin(double size) {
@@ -54,7 +56,7 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.symmetric(vertical: 16),
         width: size * 0.6,
         child: ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/createAccout'),
+            onPressed: () => {},
             child: Text('Login'),
             style: StyleButton().myButtonStyle()));
   }
