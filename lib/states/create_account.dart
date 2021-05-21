@@ -1,4 +1,5 @@
 import 'package:bigcproj/utilities/constant/con_colors.dart';
+import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,8 +9,8 @@ class CreateAccout extends StatefulWidget {
 }
 
 class _CreateAccoutState extends State<CreateAccout> {
-
   double? lat, lng;
+  bool loading = true;
 
   @override
   void initState() {
@@ -17,13 +18,16 @@ class _CreateAccoutState extends State<CreateAccout> {
     findLatLon();
   }
 
-  Future<Null> findLatLon()async{
+  Future<Null> findLatLon() async {
     Position? position = await findPosition();
-    lat = position!.latitude;
-    lng = position.longitude;
+    setState(() {
+      lat = position!.latitude;
+      lng = position.longitude;
+      loading = false;
+    });
   }
 
-  Future<Position?> findPosition()async{
+  Future<Position?> findPosition() async {
     try {
       return await Geolocator.getCurrentPosition();
     } catch (e) {
@@ -37,15 +41,20 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: ConColors.primary, title: Text('Create Accout')),
-          body: Center(
-            child: Column(
-              children: [
-                buildName(size),
-                buildUser(size),
-                buildPassword(size),
-              ],
-            ),
-          ),
+      body: loading ? ShowProgress() : buildCenter(size),
+    );
+  }
+
+  Center buildCenter(double size) {
+    return Center(
+      child: Column(
+        children: [
+          buildName(size),
+          buildUser(size),
+          buildPassword(size),
+          Text('lat: $lat long: $lng'),
+        ],
+      ),
     );
   }
 
@@ -55,7 +64,8 @@ class _CreateAccoutState extends State<CreateAccout> {
         child: TextFormField(
           decoration: InputDecoration(
               labelText: 'Name :',
-              prefixIcon: Icon(Icons.fingerprint_outlined, color: ConColors.primary),
+              prefixIcon:
+                  Icon(Icons.fingerprint_outlined, color: ConColors.primary),
               enabledBorder:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               focusedBorder: OutlineInputBorder(
@@ -90,7 +100,8 @@ class _CreateAccoutState extends State<CreateAccout> {
           obscureText: true,
           decoration: InputDecoration(
               labelText: 'Password :',
-              prefixIcon: Icon(Icons.lock_clock_outlined, color: ConColors.primary),
+              prefixIcon:
+                  Icon(Icons.lock_clock_outlined, color: ConColors.primary),
               enabledBorder:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               focusedBorder: OutlineInputBorder(
