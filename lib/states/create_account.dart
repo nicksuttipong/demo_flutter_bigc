@@ -3,6 +3,7 @@ import 'package:bigcproj/utilities/style/style_button.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CreateAccout extends StatefulWidget {
   @override
@@ -75,14 +76,29 @@ class _CreateAccoutState extends State<CreateAccout> {
     );
   }
 
+  Set<Marker> setMarkers() {
+    return [
+      Marker(
+        markerId: MarkerId('id'),
+        position: LatLng(lat!, lng!),
+        infoWindow: InfoWindow(title: 'You are here', snippet: 'Latitude = $lat, longitude = $lng')
+      ),
+    ].toSet();
+  }
+
   Expanded buildMap(double size) {
     return Expanded(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 16),
         width: size * 0.8,
-        height: 200,
-        color: ConColors.primary,
-        child: Text('lat: $lat long: $lng'),
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: LatLng(lat!, lng!),
+            zoom: 16,
+          ),
+          onMapCreated: (controller) {},
+          markers: setMarkers(),
+        ),
       ),
     );
   }
