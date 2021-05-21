@@ -13,6 +13,7 @@ class CreateAccout extends StatefulWidget {
 class _CreateAccoutState extends State<CreateAccout> {
   double? lat, lng;
   bool loading = true;
+  final formField = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -51,14 +52,17 @@ class _CreateAccoutState extends State<CreateAccout> {
 
   Center buildCenter(double size) {
     return Center(
-      child: Column(
-        children: [
-          buildName(size),
-          buildUser(size),
-          buildPassword(size),
-          buildMap(size),
-          buildCreateAccout(size)
-        ],
+      child: Form(
+          key: formField,
+          child: Column(
+          children: [
+            buildName(size),
+            buildUser(size),
+            buildPassword(size),
+            buildMap(size),
+            buildCreateAccout(size)
+          ],
+        ),
       ),
     );
   }
@@ -69,7 +73,11 @@ class _CreateAccoutState extends State<CreateAccout> {
       width: size * 0.6,
       child: ElevatedButton.icon(
         style: StyleButton().myButtonStyle(),
-        onPressed: () {},
+        onPressed: () {
+          if(formField.currentState!.validate()){
+
+          }
+        },
         icon: Icon(Icons.cloud_upload_rounded),
         label: Text('Create Accout'),
       ),
@@ -104,11 +112,19 @@ class _CreateAccoutState extends State<CreateAccout> {
   }
 
   Container buildName(double size) {
+    final String filename = 'Name';
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please fill $filename';
+          } else {
+            return null;
+          }
+        },
           decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: '$filename :',
               prefixIcon:
                   Icon(Icons.fingerprint_outlined, color: ConColors.primary),
               enabledBorder:
