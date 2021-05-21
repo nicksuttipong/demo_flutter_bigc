@@ -1,5 +1,6 @@
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/style/style_button.dart';
+import 'package:bigcproj/utilities/style/style_text.dart';
 import 'package:bigcproj/widgets/show_image.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,19 @@ class _AuthenState extends State<Authen> {
           child: Column(
             children: [
               buildImage(size),
-              ShowTitle(title: 'BIG C Online',),
+              ShowTitle(
+                  title: 'BIG C Online', textStyle: StyleText().h1Style()),
               buildUser(size),
               buildPassword(size),
-              buildLogin(size)
+              buildLogin(size),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ShowTitle(
+                      title: 'Non Account?', textStyle: StyleText().h3Style()),
+                  TextButton(onPressed: () {}, child: Text('Create Account'))
+                ],
+              ),
             ],
           ),
         ),
