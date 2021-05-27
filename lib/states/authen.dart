@@ -1,9 +1,14 @@
+import 'dart:convert';
+
+import 'package:bigcproj/model/user_model.dart';
+import 'package:bigcproj/utilities/componants/com_dialog.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/style/style_button.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
 import 'package:bigcproj/widgets/show_image.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -12,6 +17,8 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   final formField = GlobalKey<FormState>();
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +68,14 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.symmetric(vertical: 16),
         width: size * 0.6,
         child: ElevatedButton(
-            onPressed: () => {if (formField.currentState!.validate()) {}},
+            onPressed: () {
+              if (formField.currentState!.validate()) {
+                String user = userController.text;
+                String password = passwordController.text;
+
+                checkAuthen(user: user, password: password);
+              }
+            },
             child: Text('Login'),
             style: StyleButton().myButtonStyle()));
   }
@@ -70,6 +84,7 @@ class _AuthenState extends State<Authen> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          controller: userController,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Please fill User';
@@ -100,6 +115,7 @@ class _AuthenState extends State<Authen> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          controller: passwordController,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Please fill Password';
@@ -136,5 +152,26 @@ class _AuthenState extends State<Authen> {
       width: size * 0.5,
       child: ShowImage(),
     );
+  }
+
+  Future<Null> checkAuthen({@required String? user, @required String? password}) async{
+    String apiLoginUser =
+        "https://www.androidthai.in.th/bigc/getUserWhereUser.php?isAdd=true&user=$user";
+
+    await Dio().get(apiLoginUser).then((value)  {
+      if(value.toString() == 'null'){
+        normalDialog(context, 'Error', 'No User : $user');
+      } else {
+        var result = json.decode(value.data);
+        for (var item in result) {
+          UserModel model = UserModel.fromMap(item);
+          if(password == model.password){
+            Navigator.pushNamedAndRemoveUntil(context, '/serviceUser', (route) => false);
+          } else {
+            normalDialog(context, 'Password fail', 'Please Try Again Password');
+          }
+        }
+      }
+    });
   }
 }
