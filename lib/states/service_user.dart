@@ -4,6 +4,7 @@ import 'package:bigcproj/model/product_model.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
 import 'package:bigcproj/widgets/show_description.dart';
+import 'package:bigcproj/widgets/show_image.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -81,14 +82,65 @@ class _ServiceUserState extends State<ServiceUser> {
     return word;
   }
 
+  Future<Null> showDetailDialog(ProductModel model) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: ListTile(
+          leading: ShowImage(),
+          title: ShowTitle(
+            title: model.nameFood,
+            textStyle: StyleText().h2Style(),
+          ),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Image.network(
+                'https://www.androidthai.in.th/bigc${model.image}'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ShowTitle(
+              title: model.category,
+              textStyle: StyleText().h2Style(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ShowTitle(
+              title: model.detail,
+              textStyle: StyleText().h3Style(),
+            ),
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Add Cart'),
+              ),
+               TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   ListView buildListView() {
     return ListView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
       itemCount: productModels.length,
-      itemBuilder: (context, index) => GestureDetector (
-              child: Card(
-          color: index%2 == 0 ? Colors.grey.shade200 : Colors.white,
+      itemBuilder: (context, index) => GestureDetector(
+        onTap: () {
+          showDetailDialog(productModels[index]);
+        },
+        child: Card(
+          color: index % 2 == 0 ? Colors.grey.shade200 : Colors.white,
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
@@ -113,7 +165,8 @@ class _ServiceUserState extends State<ServiceUser> {
                 ),
                 Container(
                   width: 120,
-                  child: Image.network('$baseAPI/${productModels[index].image}'),
+                  child:
+                      Image.network('$baseAPI/${productModels[index].image}'),
                 ),
               ],
             ),
