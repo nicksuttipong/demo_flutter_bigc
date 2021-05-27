@@ -1,3 +1,4 @@
+import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:flutter/material.dart';
 class ServiceUser extends StatefulWidget {
   @override
@@ -8,7 +9,10 @@ class _ServiceUserState extends State<ServiceUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: ConColors.primary,
+        title: Text('Service User'),
+      ),
     );
   }
 }
