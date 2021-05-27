@@ -3,6 +3,7 @@ import 'package:bigcproj/states/create_account.dart';
 import 'package:bigcproj/states/service_admin.dart';
 import 'package:bigcproj/states/service_user.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
@@ -13,8 +14,15 @@ final Map<String, WidgetBuilder> map = {
 
 String? initailRoute;
 
-void main(){
-  initailRoute = '/authen';
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preference = await SharedPreferences.getInstance();
+  String? user = preference.getString('user');
+  if(user?.isEmpty?? true){
+    initailRoute = '/authen';
+  } else {
+    initailRoute = '/serviceUser';
+  }
   runApp(MyApp());
 }
 

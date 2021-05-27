@@ -9,6 +9,7 @@ import 'package:bigcproj/widgets/show_image.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -158,7 +159,7 @@ class _AuthenState extends State<Authen> {
     String apiLoginUser =
         "https://www.androidthai.in.th/bigc/getUserWhereUser.php?isAdd=true&user=$user";
 
-    await Dio().get(apiLoginUser).then((value)  {
+    await Dio().get(apiLoginUser).then((value) async {
       if(value.toString() == 'null'){
         normalDialog(context, 'Error', 'No User : $user');
       } else {
@@ -166,6 +167,10 @@ class _AuthenState extends State<Authen> {
         for (var item in result) {
           UserModel model = UserModel.fromMap(item);
           if(password == model.password){
+            SharedPreferences preference = await SharedPreferences.getInstance();
+            preference.setString('user', model.user);
+            preference.setString('name', model.name);
+            preference.setString('id', model.id);
             Navigator.pushNamedAndRemoveUntil(context, '/serviceUser', (route) => false);
           } else {
             normalDialog(context, 'Password fail', 'Please Try Again Password');
