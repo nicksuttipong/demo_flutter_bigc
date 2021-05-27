@@ -15,6 +15,10 @@ class _CreateAccoutState extends State<CreateAccout> {
   bool loading = true;
   final formField = GlobalKey<FormState>();
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -76,7 +80,12 @@ class _CreateAccoutState extends State<CreateAccout> {
       child: ElevatedButton.icon(
         style: StyleButton().myButtonStyle(),
         onPressed: () {
-          if (formField.currentState!.validate()) {}
+          if (formField.currentState!.validate()) {
+            String name = nameController.text;
+            String user = userController.text;
+            String pass = passwordController.text;
+            print("$name $user $pass $lat $lng");
+          }
         },
         icon: Icon(Icons.cloud_upload_rounded),
         label: Text('Create Accout'),
@@ -116,6 +125,7 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          controller: nameController,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Please fill $filename';
@@ -149,6 +159,7 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          controller: userController,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Please fill $filename';
@@ -182,6 +193,7 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          controller: passwordController,
           obscureText: true,
           validator: (value) {
             if (value!.isEmpty) {
