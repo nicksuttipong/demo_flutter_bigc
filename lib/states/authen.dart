@@ -11,22 +11,27 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+  final formField = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-          child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildImage(size),
-              buildShowTitle(),
-              buildUser(size),
-              buildPassword(size),
-              buildLogin(size),
-              buildRow(),
-            ],
+          child: Form(
+        key: formField,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildImage(size),
+                buildShowTitle(),
+                buildUser(size),
+                buildPassword(size),
+                buildLogin(size),
+                buildRow(),
+              ],
+            ),
           ),
         ),
       )),
@@ -56,7 +61,7 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.symmetric(vertical: 16),
         width: size * 0.6,
         child: ElevatedButton(
-            onPressed: () => {print('Click Login')},
+            onPressed: () => {if (formField.currentState!.validate()) {}},
             child: Text('Login'),
             style: StyleButton().myButtonStyle()));
   }
@@ -65,14 +70,27 @@ class _AuthenState extends State<Authen> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please fill User';
+            } else {
+              return null;
+            }
+          },
           decoration: InputDecoration(
-              labelText: 'User :',
-              prefixIcon: Icon(Icons.account_circle, color: ConColors.primary),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.primary))),
+            labelText: 'User :',
+            prefixIcon: Icon(Icons.account_circle, color: ConColors.primary),
+            enabledBorder:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: ConColors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
@@ -82,18 +100,31 @@ class _AuthenState extends State<Authen> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please fill Password';
+            } else {
+              return null;
+            }
+          },
           obscureText: true,
           decoration: InputDecoration(
-              suffixIcon: IconButton(
-                  onPressed: () {}, icon: Icon(Icons.remove_red_eye)),
-              labelText: 'Password :',
-              prefixIcon:
-                  Icon(Icons.lock_clock_outlined, color: ConColors.primary),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.primary))),
+            suffixIcon:
+                IconButton(onPressed: () {}, icon: Icon(Icons.remove_red_eye)),
+            labelText: 'Password :',
+            prefixIcon:
+                Icon(Icons.lock_clock_outlined, color: ConColors.primary),
+            enabledBorder:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: ConColors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
