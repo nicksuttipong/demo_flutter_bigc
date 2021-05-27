@@ -1,9 +1,11 @@
+import 'package:bigcproj/utilities/componants/com_dialog.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/style/style_button.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dio/dio.dart';
 
 class CreateAccout extends StatefulWidget {
   @override
@@ -58,8 +60,8 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Center(
       child: Form(
         key: formField,
-        child: SingleChildScrollView (
-                  child: Column(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               buildName(size),
               buildUser(size),
@@ -83,8 +85,9 @@ class _CreateAccoutState extends State<CreateAccout> {
           if (formField.currentState!.validate()) {
             String name = nameController.text;
             String user = userController.text;
-            String pass = passwordController.text;
-            print("$name $user $pass $lat $lng");
+            String password = passwordController.text;
+
+            insertNewUser(name: name, user: user, password: password);
           }
         },
         icon: Icon(Icons.cloud_upload_rounded),
@@ -223,5 +226,24 @@ class _CreateAccoutState extends State<CreateAccout> {
         width: size * 0.6);
   }
 
-  
+  Future<Null> insertNewUser(
+      {String? name, String? user, String? password}) async {
+    String apiGetUser =
+        "https://www.androidthai.in.th/bigc/getUserWhereUser.php?isAdd=true&user=$user";
+
+    await Dio().get(apiGetUser).then((value) async {
+      if(value.toString() != 'null'){
+        normalDialog(context, 'User Dup', 'Please Change User');
+      } else {
+        String apiInsertUser = "https://www.androidthai.in.th/bigc/insertUser.php?isAdd=true&name=$name&user=$user&password=$password&lat=$lat&lng=$lng";
+        await Dio().get(apiInsertUser).then((value) {
+          if(value.toString() == 'true'){
+            Navigator.pop(context);
+          } else {
+            normalDialog(context, 'Error', 'Insert again');
+          }
+        });
+      }
+    });
+  }
 }
