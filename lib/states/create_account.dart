@@ -53,15 +53,17 @@ class _CreateAccoutState extends State<CreateAccout> {
   Center buildCenter(double size) {
     return Center(
       child: Form(
-          key: formField,
-          child: Column(
-          children: [
-            buildName(size),
-            buildUser(size),
-            buildPassword(size),
-            buildMap(size),
-            buildCreateAccout(size)
-          ],
+        key: formField,
+        child: SingleChildScrollView (
+                  child: Column(
+            children: [
+              buildName(size),
+              buildUser(size),
+              buildPassword(size),
+              buildMap(size),
+              buildCreateAccout(size)
+            ],
+          ),
         ),
       ),
     );
@@ -74,9 +76,7 @@ class _CreateAccoutState extends State<CreateAccout> {
       child: ElevatedButton.icon(
         style: StyleButton().myButtonStyle(),
         onPressed: () {
-          if(formField.currentState!.validate()){
-
-          }
+          if (formField.currentState!.validate()) {}
         },
         icon: Icon(Icons.cloud_upload_rounded),
         label: Text('Create Accout'),
@@ -87,26 +87,26 @@ class _CreateAccoutState extends State<CreateAccout> {
   Set<Marker> setMarkers() {
     return [
       Marker(
-        markerId: MarkerId('id'),
-        position: LatLng(lat!, lng!),
-        infoWindow: InfoWindow(title: 'You are here', snippet: 'Latitude = $lat, longitude = $lng')
-      ),
+          markerId: MarkerId('id'),
+          position: LatLng(lat!, lng!),
+          infoWindow: InfoWindow(
+              title: 'You are here',
+              snippet: 'Latitude = $lat, longitude = $lng')),
     ].toSet();
   }
 
-  Expanded buildMap(double size) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        width: size * 0.8,
-        child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(lat!, lng!),
-            zoom: 16,
-          ),
-          onMapCreated: (controller) {},
-          markers: setMarkers(),
+  Container buildMap(double size) {
+    return Container(
+      height: 200,
+      margin: EdgeInsets.symmetric(vertical: 16),
+      width: size * 0.8,
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(lat!, lng!),
+          zoom: 16,
         ),
+        onMapCreated: (controller) {},
+        markers: setMarkers(),
       ),
     );
   }
@@ -116,60 +116,100 @@ class _CreateAccoutState extends State<CreateAccout> {
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please fill $filename';
-          } else {
-            return null;
-          }
-        },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please fill $filename';
+            } else {
+              return null;
+            }
+          },
           decoration: InputDecoration(
-              labelText: '$filename :',
-              prefixIcon:
-                  Icon(Icons.fingerprint_outlined, color: ConColors.primary),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.primary))),
+            labelText: '$filename :',
+            prefixIcon:
+                Icon(Icons.fingerprint_outlined, color: ConColors.primary),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: ConColors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
   }
 
   Container buildUser(double size) {
+    final String filename = 'User';
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please fill $filename';
+            } else {
+              return null;
+            }
+          },
           decoration: InputDecoration(
-              labelText: 'User :',
-              prefixIcon: Icon(Icons.account_circle, color: ConColors.primary),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.primary))),
+            labelText: '$filename :',
+            prefixIcon:
+                Icon(Icons.fingerprint_outlined, color: ConColors.primary),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: ConColors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
   }
 
   Container buildPassword(double size) {
+    final String filename = 'Password';
     return Container(
         margin: EdgeInsets.only(top: 16),
         child: TextFormField(
           obscureText: true,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please fill $filename';
+            } else {
+              return null;
+            }
+          },
           decoration: InputDecoration(
-              labelText: 'Password :',
-              prefixIcon:
-                  Icon(Icons.lock_clock_outlined, color: ConColors.primary),
-              enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: ConColors.primary))),
+            labelText: '$filename :',
+            prefixIcon:
+                Icon(Icons.fingerprint_outlined, color: ConColors.primary),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: ConColors.primary),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
           keyboardType: TextInputType.text,
         ),
         width: size * 0.6);
   }
+
+  
 }
