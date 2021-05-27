@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bigcproj/model/product_model.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
+import 'package:bigcproj/widgets/show_description.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:bigcproj/widgets/show_title.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -23,6 +24,7 @@ class _ServiceUserState extends State<ServiceUser> {
     'assets/images/b3.png',
   ];
   List<ProductModel> productModels = [];
+  final String baseAPI = 'https://www.androidthai.in.th/bigc';
 
   void initState() {
     super.initState();
@@ -31,7 +33,7 @@ class _ServiceUserState extends State<ServiceUser> {
   }
 
   Future<Null> readData() async {
-    String apiFoods = 'https://www.androidthai.in.th/bigc/getAllFood.php';
+    String apiFoods = '$baseAPI/getAllFood.php';
     await Dio().get(apiFoods).then((value) {
       var result = json.decode(value.data);
       for (var item in result) {
@@ -64,16 +66,58 @@ class _ServiceUserState extends State<ServiceUser> {
           children: [
             buildBanners(),
             buildTitle(),
-            productModels.length == 0
-                ? ShowProgress()
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: productModels.length,
-                    itemBuilder: (context, index) =>
-                        Text(productModels[index].nameFood),
-                  ),
+            productModels.length == 0 ? ShowProgress() : buildListView(),
           ],
+        ),
+      ),
+    );
+  }
+
+  String cutWord(String word) {
+    if (word.length > 100) {
+      word = word.substring(0, 100);
+      word = '$word ...';
+    }
+    return word;
+  }
+
+  ListView buildListView() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: ScrollPhysics(),
+      itemCount: productModels.length,
+      itemBuilder: (context, index) => GestureDetector (
+              child: Card(
+          color: index%2 == 0 ? Colors.grey.shade200 : Colors.white,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 250,
+                  height: 120,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ShowTitle(
+                        title: productModels[index].nameFood,
+                        textStyle: StyleText().h2Style(),
+                      ),
+                      ShowDiscripion(
+                        word: productModels[index].detail,
+                        textStyle: StyleText().h3Style(),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 120,
+                  child: Image.network('$baseAPI/${productModels[index].image}'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
