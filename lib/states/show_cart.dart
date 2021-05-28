@@ -14,6 +14,7 @@ class ShowCart extends StatefulWidget {
 class _ShowCartState extends State<ShowCart> {
   List<SQLiteModel> models = [];
   int total = 0;
+  bool loading = true;
 
   void initState() {
     super.initState();
@@ -21,9 +22,16 @@ class _ShowCartState extends State<ShowCart> {
   }
 
   Future<Null> readCart() async {
+    if (models.length != 0) {
+      models.clear();
+      total = 0;
+    }
     await SQLiteHelper().readSQLite().then((value) {
       var result = value;
-      print('${result.length}');
+      setState(() {
+        loading = false;
+      });
+      print('Length Cart : ${result.length}');
       for (var item in result) {
         setState(() {
           total = total + int.parse(item.price);
@@ -40,21 +48,32 @@ class _ShowCartState extends State<ShowCart> {
         backgroundColor: ConColors.primary,
         title: Text('Show Cart'),
       ),
-      body: models.length == 0
+      body: loading
           ? ShowProgress()
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    buildHeader(),
-                    buildListView(),
-                    Divider(color: ConColors.primary),
-                    buildTotal(),
-                  ],
-                ),
-              ),
-            ),
+          : models.length == 0
+              ? Center(
+                child: ShowTitle(
+                    title: 'No Cart',
+                    textStyle: StyleText().h1Style(),
+                  ),
+              )
+              : buildContent(),
+    );
+  }
+
+  SingleChildScrollView buildContent() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            buildHeader(),
+            buildListView(),
+            Divider(color: ConColors.primary),
+            buildTotal(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -119,6 +138,13 @@ class _ShowCartState extends State<ShowCart> {
                 textStyle: StyleText().h2Style(),
               ),
             ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: '',
+                textStyle: StyleText().h2Style(),
+              ),
+            ),
           ],
         ),
       ),
@@ -165,11 +191,19 @@ class _ShowCartState extends State<ShowCart> {
             Expanded(
               flex: 1,
               child: IconButton(
-                  onPressed: () {}, icon: Icon(Icons.delete_forever_outlined)),
+                  onPressed: () => deleteById(models[index].id),
+                  icon: Icon(Icons.delete_forever_outlined)),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<Null> deleteById(int? id) async {
+    print('Delete $id');
+    await SQLiteHelper().deleteValueById(id!).then(
+          (value) => readCart(),
+        );
   }
 }
