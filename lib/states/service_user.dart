@@ -39,11 +39,14 @@ class _ServiceUserState extends State<ServiceUser> {
     String apiFoods = '$baseAPI/getAllFood.php';
     await Dio().get(apiFoods).then((value) {
       var result = json.decode(value.data);
+      int count = 0;
       for (var item in result) {
         ProductModel model = ProductModel.fromMap(item);
         setState(() {
           productModels.add(model);
         });
+        if(count > 10) break;
+        count++;
       }
     });
   }
