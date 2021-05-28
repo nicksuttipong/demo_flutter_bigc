@@ -42,13 +42,18 @@ class _ShowCartState extends State<ShowCart> {
       ),
       body: models.length == 0
           ? ShowProgress()
-          : Column(
-              children: [
-                buildHeader(),
-                buildListView(),
-                Divider(color: ConColors.primary),
-                buildTotal(),
-              ],
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    buildHeader(),
+                    buildListView(),
+                    Divider(color: ConColors.primary),
+                    buildTotal(),
+                  ],
+                ),
+              ),
             ),
     );
   }
@@ -156,6 +161,11 @@ class _ShowCartState extends State<ShowCart> {
                 title: models[index].sum,
                 textStyle: StyleText().h2Style(),
               ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                  onPressed: () {}, icon: Icon(Icons.delete_forever_outlined)),
             ),
           ],
         ),
