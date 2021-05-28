@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 class SQLiteModel {
-  final int id;
-  final String idUser;
-  final String nameUser;
-  final String idProduct;
-  final String nameProduct;
-  final String price;
-  final String amount;
-  final String sum;
+  int? id;
+  String idUser;
+  String nameUser;
+  String idProduct;
+  String nameProduct;
+  String price;
+  String amount;
+  String sum;
   SQLiteModel({
-    required this.id,
+    this.id,
     required this.idUser,
     required this.nameUser,
     required this.idProduct,
@@ -19,6 +19,7 @@ class SQLiteModel {
     required this.amount,
     required this.sum,
   });
+  
 
   SQLiteModel copyWith({
     int? id,

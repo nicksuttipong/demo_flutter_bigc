@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 class SQLiteHelper {
   final String nameDatabase = 'bigc.db';
-  final String nameTable = 'order';
+  final String nameTable = 'orderProduct';
   final int version = 1;
 
   final String columnId = 'id';

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bigcproj/model/product_model.dart';
+import 'package:bigcproj/model/sqlite_model.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
+import 'package:bigcproj/utilities/lib/sqlite_helper.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
 import 'package:bigcproj/widgets/show_description.dart';
 import 'package:bigcproj/widgets/show_image.dart';
@@ -59,6 +61,7 @@ class _ServiceUserState extends State<ServiceUser> {
         backgroundColor: ConColors.primary,
         title: Text('Welcome User'),
         actions: [
+          buildShowCart(context),
           buildSignOut(),
         ],
       ),
@@ -72,6 +75,13 @@ class _ServiceUserState extends State<ServiceUser> {
         ),
       ),
     );
+  }
+
+  IconButton buildShowCart(BuildContext context) {
+    return IconButton(
+          onPressed: () => Navigator.pushNamed(context, '/showCart'),
+          icon: Icon(Icons.shopping_cart),
+        );
   }
 
   String cutWord(String word) {
@@ -113,13 +123,17 @@ class _ServiceUserState extends State<ServiceUser> {
               textStyle: StyleText().h3Style(),
             ),
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  processAddCart(model);
+                },
                 child: Text('Add Cart'),
               ),
-               TextButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text('Cancel'),
               ),
@@ -128,6 +142,31 @@ class _ServiceUserState extends State<ServiceUser> {
         ],
       ),
     );
+  }
+
+  Future<Null> processAddCart(ProductModel productModel) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    String? idUser = preference.getString('id');
+    String? nameUser = preference.getString('name');
+    String? idProduct = productModel.id;
+    String? nameProduct = productModel.nameFood;
+    String? price = productModel.price;
+    String? amount = '1';
+
+    SQLiteModel model = SQLiteModel(
+      id: null,
+      idUser: idUser!,
+      nameUser: nameUser!,
+      idProduct: idProduct,
+      nameProduct: nameProduct,
+      price: price,
+      amount: amount,
+      sum: price,
+    );
+
+    await SQLiteHelper()
+        .insertValueSQLite(model)
+        .then((value) => print('Add OK'));
   }
 
   ListView buildListView() {
