@@ -2,6 +2,7 @@ import 'package:bigcproj/states/authen.dart';
 import 'package:bigcproj/states/create_account.dart';
 import 'package:bigcproj/states/service_admin.dart';
 import 'package:bigcproj/states/service_user.dart';
+import 'package:bigcproj/states/show_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,7 @@ final Map<String, WidgetBuilder> map = {
   '/createAccout': (BuildContext context) => CreateAccout(),
   '/serviceAdmin': (BuildContext context) => ServiceAdmin(),
   '/serviceUser': (BuildContext context) => ServiceUser(),
+  '/showCart': (BuildContext context) => ShowCart(),
 };
 
 String? initailRoute;
