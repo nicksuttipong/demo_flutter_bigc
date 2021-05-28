@@ -4,7 +4,9 @@ import 'package:bigcproj/utilities/lib/sqlite_helper.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
 import 'package:bigcproj/widgets/show_progress.dart';
 import 'package:bigcproj/widgets/show_title.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowCart extends StatefulWidget {
   @override
@@ -31,7 +33,6 @@ class _ShowCartState extends State<ShowCart> {
       setState(() {
         loading = false;
       });
-      print('Length Cart : ${result.length}');
       for (var item in result) {
         setState(() {
           total = total + int.parse(item.price);
@@ -52,11 +53,11 @@ class _ShowCartState extends State<ShowCart> {
           ? ShowProgress()
           : models.length == 0
               ? Center(
-                child: ShowTitle(
+                  child: ShowTitle(
                     title: 'No Cart',
                     textStyle: StyleText().h1Style(),
                   ),
-              )
+                )
               : buildContent(),
     );
   }
@@ -71,10 +72,61 @@ class _ShowCartState extends State<ShowCart> {
             buildListView(),
             Divider(color: ConColors.primary),
             buildTotal(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => processOrder(),
+                  icon: Icon(Icons.cloud_upload),
+                  label: Text('Order'),
+                ),
+                SizedBox(
+                  width: 16,
+                )
+              ],
+            )
           ],
         ),
       ),
     );
+  }
+
+  String changeStringToArray(int key) {
+    List<String> results = [];
+    for (var model in models) {
+      switch (key) {
+        case 0:
+          results.add(model.idProduct);
+          break;
+        case 1:
+          results.add(model.nameProduct);
+          break;
+        case 2:
+          results.add(model.price);
+          break;
+        case 3:
+          results.add(model.amount);
+          break;
+        default:
+      }
+    }
+
+
+    return results.toString();
+  }
+
+  Future<Null> processOrder() async{
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    String? idUser = preference.getString('id');
+    String? nameUser = preference.getString('name');
+    String? idProduct = changeStringToArray(0);
+    String? nameProduct = changeStringToArray(1);
+    String? price = changeStringToArray(2);
+    String? amount = changeStringToArray(3);
+    final apiInsert = 'https://www.androidthai.in.th/bigc/orderSu.php?isAdd=true&idUser=$idUser&nameUser=$nameUser&idProduct=$idProduct&nameProduct=$nameProduct&price=$price&amount=$amount';
+    await Dio().get(apiInsert).then((value) async {
+      print('Insert OK');
+    });
   }
 
   Row buildTotal() {
