@@ -1,4 +1,5 @@
 import 'package:bigcproj/model/sqlite_model.dart';
+import 'package:bigcproj/utilities/componants/com_dialog.dart';
 import 'package:bigcproj/utilities/constant/con_colors.dart';
 import 'package:bigcproj/utilities/lib/sqlite_helper.dart';
 import 'package:bigcproj/utilities/style/style_text.dart';
@@ -125,7 +126,11 @@ class _ShowCartState extends State<ShowCart> {
     String? amount = changeStringToArray(3);
     final apiInsert = 'https://www.androidthai.in.th/bigc/orderSu.php?isAdd=true&idUser=$idUser&nameUser=$nameUser&idProduct=$idProduct&nameProduct=$nameProduct&price=$price&amount=$amount';
     await Dio().get(apiInsert).then((value) async {
-      print('Insert OK');
+      if (value.toString() == 'true') {
+         await SQLiteHelper().deleteAll().then((value) => readCart());
+       } else {
+         normalDialog(context, 'Cannot Order', 'Please Try Again');
+       }
     });
   }
 
