@@ -19,6 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 - Android
 Path: /android/app/src/main/res/*
 Name: /android/app/src/main/AndroidManifest.xml > android:label
+KeyStore: /android/key/upload-keystore.jks > p12345678@
 
 - ios
 Path: /ios/Runner/Assets.xcassets/AppIcon.appiconset
